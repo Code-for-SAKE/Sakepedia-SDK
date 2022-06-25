@@ -1,0 +1,2 @@
+# SakepediaSDK
+SakepediaのAPIをプログラムから利用しやすくするためのPythonSDK
