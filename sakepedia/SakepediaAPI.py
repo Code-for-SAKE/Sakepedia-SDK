@@ -62,6 +62,7 @@ class SakepediaAPI:
     url = self.BASE_URL + "sakes"
     saveData = {
         "name": data.name,
+        "kana": data.kana,
         "brand": data.brand, 
         "brewery": data.brewery, 
         "subname": data.subname, 
@@ -87,6 +88,7 @@ class SakepediaAPI:
     url = self.BASE_URL + "sakes/" + id
     saveData = {
         "name": data.name,
+        "kana": data.kana,
         "brand": data.brand, 
         "brewery": data.brewery, 
         "subname": data.subname, 

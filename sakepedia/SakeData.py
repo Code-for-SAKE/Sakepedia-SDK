@@ -2,6 +2,7 @@ import json
 
 class SakeData:
     name:str = None
+    kana:str = None
     brand:str = None
     brewery:str = None
     subname:str = None
