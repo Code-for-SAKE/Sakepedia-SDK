@@ -29,6 +29,7 @@ sake.brewery = "test brewery"
 sake.brand =  "test brand"
 sake.url = "https://testbrewery.co.jp/testbrand/sake"
 sake.name = "test sake bottle"
+sake.kana = "てすと"
 sake.description = "test description"
 
 res = api.saveSakeData(sake)
