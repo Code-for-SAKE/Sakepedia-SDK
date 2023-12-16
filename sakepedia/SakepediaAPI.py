@@ -16,27 +16,51 @@ class SakepediaAPI:
 
   #酒蔵データ取得
   def getBrewery(self, name):
-    url = self.BASE_URL + "list/breweries?keyword="
     try:
+      url = self.BASE_URL + "breweries/"
+      request = urllib.request.Request(url=url+urllib.parse.quote(name), headers=self.HEADERS, method="GET")
+      try:
+        response = urllib.request.urlopen(request)
+        soup = BeautifulSoup(response, features="lxml")
+        return json.loads(soup.text)
+      except:
+        print("オブジェクトIDが指定されていません")
+      url = self.BASE_URL + "list/breweries?keyword="
       request = urllib.request.Request(url=url+urllib.parse.quote(name), headers=self.HEADERS, method="GET")
       response = urllib.request.urlopen(request)
       soup = BeautifulSoup(response, features="lxml")
       response.close()
-      return json.loads(soup.text)[0]
+      if (len(json.loads(soup.text)) > 1):
+        print("酒蔵名が複数存在するためオブジェクトID指定が必要です")
+        return None
+      else:
+        return json.loads(soup.text)[0]
     except Exception as e:
-      print(e)
+      print('getBrewery', e)
 
   #銘柄データ取得
   def getBrand(self, name):
-    url = self.BASE_URL + "list/brands?keyword="
     try:
+      url = self.BASE_URL + "brands/"
+      request = urllib.request.Request(url=url+urllib.parse.quote(name), headers=self.HEADERS, method="GET")
+      try:
+        response = urllib.request.urlopen(request)
+        soup = BeautifulSoup(response, features="lxml")
+        return json.loads(soup.text)
+      except:
+        print("オブジェクトIDが指定されていません")
+      url = self.BASE_URL + "list/brands?keyword="
       request = urllib.request.Request(url=url+urllib.parse.quote(name), headers=self.HEADERS, method="GET")
       response = urllib.request.urlopen(request)
       soup = BeautifulSoup(response, features="lxml")
       response.close()
-      return json.loads(soup.text)[0]
+      if (len(json.loads(soup.text)) > 1):
+        print("銘柄名が複数存在するためオブジェクトID指定が必要です")
+        return None
+      else:
+        return json.loads(soup.text)[0]
     except Exception as e:
-      print(e)
+      print('getBrand', e)
 
   #日本酒データ取得
   def getSakeData(self, name):
@@ -46,21 +70,27 @@ class SakepediaAPI:
       response = urllib.request.urlopen(request)
       soup = BeautifulSoup(response, features="lxml")
       response.close()
-      return json.loads(soup.text)[0]
+      if (len(json.loads(soup.text)) > 0):
+        return json.loads(soup.text)[0]
+      else:
+        return None
     except Exception as e:
-      print(e)
+      print('getSakeData', e)
 
   #日本酒データの酒蔵名、銘柄名をIDに変換
   def name2IdSakeData(self, data: SakeData):
-    if(data.brand is str):
+    if(type(data.brand) is str):
       data.brand = self.getBrand(data.brand)
-    if(data.brewery is str):
+    if(type(data.brewery) is str):
       data.brewery = self.getBrewery(data.brewery)
     return data
 
   #日本酒データをSakepediaに登録
   def addSakeData(self, data: SakeData):
     data = self.name2IdSakeData(data)
+    if (data.brewery==None) or (data.brand==None):
+      print("addSakeData ERROR")
+      return
     url = self.BASE_URL + "sakes"
     saveData = {
         "name": data.name,
@@ -87,6 +117,9 @@ class SakepediaAPI:
   #Sakepediaの日本酒データを更新
   def updateSakeData(self, id, data: SakeData):
     data = self.name2IdSakeData(data)
+    if (data.brewery==None) or (data.brand==None):
+      print("addSakeData ERROR")
+      return
     url = self.BASE_URL + "sakes/" + id
     saveData = {
         "name": data.name,
