@@ -52,10 +52,8 @@ class SakepediaAPI:
 
   #日本酒データの酒蔵名、銘柄名をIDに変換
   def name2IdSakeData(self, data: SakeData):
-    if(data.brand is str):
-      data.brand = self.getBrand(data.brand)
-    if(data.brewery is str):
-      data.brewery = self.getBrewery(data.brewery)
+    data.brand = self.getBrand(data.brand)
+    data.brewery = self.getBrewery(data.brewery)
     return data
 
   #日本酒データをSakepediaに登録
