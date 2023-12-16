@@ -21,6 +21,8 @@ JWTの有効期限にご注意ください。*
 ### 日本酒データの登録、既にあれば更新
 
 ```
+import sakepedia
+
 JWT = "JWT issued with your own Sakepedia account"
 api = sakepedia.SakepediaAPI(JWT)
 
@@ -35,6 +37,15 @@ sake.description = "test description"
 res = api.saveSakeData(sake)
 ```
 
+## 開発環境
+
+- python3.7
+
+ローカルで試す
+
+```
+python example.py
+```
 
 ## パッケージのビルドとアップロード
 
